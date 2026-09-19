@@ -1,9 +1,6 @@
-from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 
 from backend.core.config import settings
 from backend.core.database import init_db
@@ -19,8 +16,6 @@ from backend.api.query import router as query_router
 from backend.api.analytics import router as analytics_router
 from backend.api.documents import router as documents_router
 from backend.api.audit import router as audit_router
-
-DIST_DIR = Path(__file__).resolve().parent.parent / "dist"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -44,10 +39,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Mount static assets if dist exists
-if (DIST_DIR / "assets").exists():
-    app.mount("/assets", StaticFiles(directory=str(DIST_DIR / "assets")), name="assets")
 
 # Mount Routers with /api prefix
 app.include_router(contracts_router, prefix="/api")
@@ -82,23 +73,6 @@ def health_check():
         "version": settings.APP_VERSION,
         "tagline": settings.TAGLINE
     }
-
-@app.get("/")
-def serve_root():
-    index_file = DIST_DIR / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
-    return {"status": "ContractLens Enterprise Agent Ready"}
-
-@app.get("/{full_path:path}")
-def serve_spa(full_path: str):
-    file_path = DIST_DIR / full_path
-    if file_path.is_file():
-        return FileResponse(file_path)
-    index_file = DIST_DIR / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
-    return {"detail": "Not Found"}
 
 if __name__ == "__main__":
     import uvicorn
