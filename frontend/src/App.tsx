@@ -141,16 +141,18 @@ export const App: React.FC = () => {
               {currentTab === 'overview' && (
                 <Dashboard
                   metrics={metrics}
+                  contracts={contracts}
                   obligations={obligations}
+                  reviews={reviews}
                   auditLogs={auditLogs}
                   onNavigate={handleNavigate}
-                  onOpenObligationEvidence={(ob) =>
+                  onOpenEvidence={(finding) =>
                     handleOpenEvidence(
-                      ob.source_page,
-                      ob.source_text,
-                      ob.title,
-                      ob.contract_id,
-                      ob.source_clause_id
+                      finding.page,
+                      finding.quote,
+                      finding.title,
+                      finding.docName,
+                      finding.section
                     )
                   }
                 />
@@ -172,9 +174,9 @@ export const App: React.FC = () => {
                     handleOpenEvidence(
                       ob.source_page,
                       ob.source_text,
-                      ob.title,
+                      ob.action,
                       ob.contract_id,
-                      ob.source_clause_id
+                      ob.source_section
                     )
                   }
                 />

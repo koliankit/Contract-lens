@@ -24,7 +24,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   onOpenEvidence,
 }) => {
   const activeContractsCount = metrics ? metrics.active_contracts : contracts.length;
-  const upcomingDeadlinesCount = metrics ? metrics.upcoming_deadlines : obligations.filter((o) => o.status === 'UPCOMING' || o.status === 'DUE_SOON').length;
+  const upcomingDeadlinesCount = metrics ? metrics.upcoming_deadlines : obligations.filter((o) => o.status === 'UPCOMING' || o.status === 'IN_PROGRESS').length;
   const reviewRequiredCount = metrics ? metrics.review_required : reviews.filter((r) => r.status === 'PENDING').length;
   const renewalsCount = metrics ? metrics.renewals_approaching : contracts.filter((c) => c.renewal_deadline).length;
 
