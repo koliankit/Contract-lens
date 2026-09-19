@@ -29,81 +29,66 @@ def get_document_pdf_file(document_id: str, db: Session = Depends(get_db)):
 
 @router.get("/{document_id}/pages")
 def get_document_pages(document_id: str, db: Session = Depends(get_db)):
+    from backend.agents.document_agent import DocumentIntelligenceAgent
+    from backend.models.entities import Clause
+
     doc = db.query(Document).filter(Document.id == document_id).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
 
-    # Structured pages representation for the document reader
-    # Realistic page mock for ACME_MSA_v2.pdf with Section 12.2 and Section 8.4
-    pages = [
-        {
-            "page_number": 1,
-            "title": "Parties & Recitals",
-            "content": (
-                "MASTER SERVICES AGREEMENT (VERSION 2)\n\n"
-                "This Master Services Agreement Version 2 ('Agreement') is entered into effective 15 January 2026 ('Effective Date'), "
-                "by and between ACME Corporation ('Customer') and XYZ Software Services Inc. ('Vendor').\n\n"
-                "RECITALS:\n"
-                "WHEREAS, Customer desires to license Vendor's cloud intelligence software;\n"
-                "WHEREAS, Vendor agrees to provide such enterprise services pursuant to the terms and conditions herein."
-            )
-        },
-        {
-            "page_number": 2,
-            "title": "Payment Terms",
-            "content": (
-                "SECTION 4. FEES AND PAYMENT TERMS\n\n"
-                "Section 4.1 Payment Terms (Net 45):\n"
-                "Customer shall pay all undisputed invoices within forty-five (45) days of invoice receipt ('Net 45'). "
-                "All payments shall be remitted by electronic funds transfer to Vendor's designated commercial bank account.\n\n"
-                "Section 4.2 Disputed Invoices:\n"
-                "In the event of a good faith billing dispute, Customer shall provide written notice within twenty (20) days."
-            )
-        },
-        {
-            "page_number": 3,
-            "title": "SLA & Performance Reporting",
-            "content": (
-                "SECTION 8. SERVICE LEVEL COMMITMENTS & MONITORING\n\n"
-                "Section 8.1 Availability Commitment:\n"
-                "Vendor warrants that the cloud platform will maintain 99.9% monthly uptime, offering 10% service credits if uptime falls below 99.9%.\n\n"
-                "Section 8.4 Monthly Performance Report:\n"
-                "Vendor shall submit monthly performance reports and availability metrics within 5 business days after month end to Customer Operations."
-            )
-        },
-        {
-            "page_number": 4,
-            "title": "Insurance Policies",
-            "content": (
-                "SECTION 10. INSURANCE REQUIREMENTS\n\n"
-                "Section 10.3 Required Policies:\n"
-                "Vendor shall maintain Commercial General Liability and Cyber Risk insurance with aggregate limits of not less than $2,000,000 "
-                "throughout the Term and provide an annual Certificate of Insurance upon renewal."
-            )
-        },
-        {
-            "page_number": 5,
-            "title": "Term, Renewal & Termination",
-            "content": (
-                "SECTION 12. TERM, RENEWAL, AND TERMINATION\n\n"
-                "Section 12.1 Term:\n"
-                "This Agreement shall commence on 15 January 2026 and shall expire on 15 January 2027 ('Expiration Date').\n\n"
-                "Section 12.2 Renewal Notice:\n"
-                "Either party may terminate this Agreement or prevent automatic renewal by providing at least ninety (90) days prior written notice "
-                "before the expiration of the Initial Term. In the absence of such notice, this Agreement shall automatically renew for successive one (1) year terms."
-            )
-        },
-        {
-            "page_number": 6,
-            "title": "Audit Rights & Execution",
-            "content": (
-                "SECTION 15. AUDIT RIGHTS AND GOVERNING LAW\n\n"
-                "Section 15.2 Audit Rights:\n"
-                "Customer or its designated independent auditor may conduct an annual audit of Vendor's security controls and compliance records.\n\n"
-                "IN WITNESS WHEREOF, the parties hereto have executed this Agreement."
-            )
-        }
-    ]
+    pages = []
+    # 1. Try reading real file from disk if present
+    if os.path.exists(doc.file_path):
+        parsed = DocumentIntelligenceAgent.process_file(doc.file_path, doc.filename)
+        for p in parsed.get("pages", []):
+            if p.get("text", "").strip():
+                pages.append({
+                    "page_number": p.get("page_number", 1),
+                    "title": f"Page {p.get('page_number', 1)} — {doc.filename}",
+                    "content": p.get("text")
+                })
+
+    # 2. If no text extracted from disk, construct pages from database clauses
+    if not pages:
+        clauses = db.query(Clause).filter(Clause.document_id == document_id).all()
+        by_page: dict[int, list[str]] = {}
+        for cl in clauses:
+            pg = cl.page_number or 1
+            if pg not in by_page:
+                by_page[pg] = []
+            by_page[pg].append(f"SECTION {cl.section_number}: {cl.title.upper()}\n{cl.source_text}")
+
+        for pg in sorted(by_page.keys()):
+            pages.append({
+                "page_number": pg,
+                "title": f"Page {pg} — {doc.filename}",
+                "content": "\n\n".join(by_page[pg])
+            })
+
+    # 3. Fallback to standard 4-page structure if empty
+    if not pages:
+        pages = [
+            {
+                "page_number": 1,
+                "title": "Parties & Recitals",
+                "content": f"MASTER AGREEMENT: {doc.filename}\n\nThis Agreement is entered into by and between the parties hereto pursuant to the terms and conditions herein."
+            },
+            {
+                "page_number": 2,
+                "title": "Terms, Invoicing & Service Commitments",
+                "content": "All undisputed invoices payable under agreed terms.\nService level commitments and monthly reporting standards apply."
+            },
+            {
+                "page_number": 3,
+                "title": "Renewal & Notice Provisions",
+                "content": "Either party may terminate or prevent automatic renewal by providing prior written notice before term expiration."
+            },
+            {
+                "page_number": 4,
+                "title": "Signatures & Execution",
+                "content": "IN WITNESS WHEREOF, the authorized representatives have executed this agreement."
+            }
+        ]
 
     return {
         "document_id": document_id,

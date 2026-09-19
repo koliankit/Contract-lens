@@ -3,8 +3,12 @@ from pathlib import Path
 from pydantic_settings import BaseSettings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-STORAGE_DIR = BASE_DIR / "storage"
-DOCUMENTS_DIR = STORAGE_DIR / "documents"
+if os.getenv("VERCEL"):
+    STORAGE_DIR = Path("/tmp")
+    DOCUMENTS_DIR = STORAGE_DIR / "documents"
+else:
+    STORAGE_DIR = BASE_DIR / "storage"
+    DOCUMENTS_DIR = STORAGE_DIR / "documents"
 
 class Settings(BaseSettings):
     APP_NAME: str = "ContractLens"
@@ -17,7 +21,7 @@ class Settings(BaseSettings):
     DOCUMENTS_PATH: Path = DOCUMENTS_DIR
     
     # Database
-    # Support SQLite locally and PostgreSQL in production
+    # Support SQLite locally/temp and PostgreSQL in production
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL", 
         f"sqlite:///{STORAGE_DIR / 'contractlens.db'}"

@@ -39,6 +39,19 @@ export const api = {
     if (!res.ok) throw new Error('Upload failed');
     return res.json();
   },
+  uploadNewContract: async (formData: FormData) => {
+    const res = await fetch(`${BASE_URL}/contracts/upload-new`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!res.ok) throw new Error('New contract upload failed');
+    return res.json();
+  },
+  getTestContracts: () => fetchJson<any[]>('/contracts/test-contracts'),
+  loadTestContract: (key: string) =>
+    fetchJson<any>(`/contracts/load-test-contract/${key}`, {
+      method: 'POST',
+    }),
 
   // Obligations
   getObligations: (params?: { contract_id?: string; status?: string; party?: string; internal_owner?: string; priority?: string; obligation_type?: string; search?: string }) => {

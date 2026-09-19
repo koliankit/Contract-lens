@@ -10,6 +10,8 @@ import {
   Sparkles,
   Settings,
   ShieldCheck,
+  Network,
+  History,
 } from 'lucide-react';
 
 export type NavTab =
@@ -20,7 +22,9 @@ export type NavTab =
   | 'reviews'
   | 'changes'
   | 'documents'
+  | 'graph'
   | 'query'
+  | 'audit'
   | 'settings';
 
 interface NavigationProps {
@@ -44,7 +48,9 @@ export const Navigation: React.FC<NavigationProps> = ({
     { id: 'reviews', label: 'Reviews', icon: AlertCircle, count: reviewCount, highlight: true },
     { id: 'changes', label: 'Version Changes', icon: GitCompare },
     { id: 'documents', label: 'Documents', icon: FolderArchive },
+    { id: 'graph', label: 'Contract Graph', icon: Network },
     { id: 'query', label: 'Ask ContractLens', icon: Sparkles, accent: true },
+    { id: 'audit', label: 'Audit Trail', icon: History },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 

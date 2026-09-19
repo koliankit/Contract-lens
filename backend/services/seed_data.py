@@ -76,8 +76,119 @@ def generate_pdf_document(filename: str, title: str, pages_content: list[list[st
     doc.build(story)
     return str(file_path)
 
+def generate_test_contracts():
+    out_dir = Path(settings.DOCUMENTS_PATH)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # 1. 01_ACME_SaaS_MSA.pdf
+    acme_pages = [
+        [
+            "SECTION 1. PARTIES AND EFFECTIVE DATE",
+            "This Master SaaS Services Agreement ('Agreement') is entered into effective 15 January 2026 ('Effective Date'), by and between ACME Corporation ('Customer') and CloudScale Technologies Inc. ('Vendor').",
+            "SECTION 2. TERM AND INITIAL PERIOD",
+            "The initial term of this Agreement shall commence on 15 January 2026 and continue in full force and effect until 15 January 2027 ('Expiration Date')."
+        ],
+        [
+            "SECTION 3. FEES AND PAYMENT TERMS (NET 30)",
+            "Section 3.1 Payment Terms: Customer shall pay all undisputed invoices within thirty (30) calendar days of invoice receipt ('Net 30'). Late payments shall accrue interest at 1.0% per month.",
+            "SECTION 4. SERVICE LEVEL AGREEMENT (SLA)",
+            "Section 4.1 Platform Availability: Vendor warrants that the core SaaS platform will maintain 99.5% monthly uptime, excluding scheduled maintenance windows.",
+            "SECTION 5. MONTHLY PERFORMANCE REPORTING",
+            "Section 5.1 Reporting Cadence: Vendor shall submit monthly performance and SLA reports within 10 business days following the close of each calendar month."
+        ],
+        [
+            "SECTION 6. CONFIDENTIALITY AND NON-DISCLOSURE",
+            "Each party agrees to hold all confidential information in strict confidence and safeguard it using at least reasonable care.",
+            "SECTION 7. SECURITY INCIDENT NOTIFICATION (72 HOURS)",
+            "Section 7.2 Data Breach Reporting: Vendor shall notify Customer in writing within seventy-two (72) hours after confirmation of any security breach or unauthorized access to Customer data."
+        ],
+        [
+            "SECTION 8. RENEWAL AND TERMINATION NOTICE",
+            "Section 8.1 Renewal Notice: Either party may terminate this Agreement by providing at least ninety (90) days prior written notice before the expiration of the Initial Term.",
+            "Section 8.2 Termination for Cause: Either party may terminate upon thirty (30) days written notice of uncured material breach.",
+            "SECTION 9. AUDIT RIGHTS AND COMPLIANCE",
+            "Section 9.1 Annual Audit: Customer or its independent auditor may conduct an annual audit of Vendor's security controls and compliance records.",
+            "SECTION 10. GOVERNING LAW AND EXECUTION",
+            "Governed by Delaware law. Executed by authorized representatives of ACME Corporation and CloudScale Technologies Inc."
+        ]
+    ]
+    p_acme = generate_pdf_document("01_ACME_SaaS_MSA.pdf", "ACME Master SaaS Services Agreement", acme_pages)
+
+    # 2. 02_NOVA_VENDOR_SERVICE_AGREEMENT.pdf
+    nova_pages = [
+        [
+            "SECTION 1. PARTIES AND SCOPE OF SERVICES",
+            "This Vendor Service Agreement is effective as of 1 February 2026, by and between Nova Retail Enterprises Ltd. ('Customer') and Apex Logistics & Supply Chain Solutions ('Vendor').",
+            "SECTION 2. INITIAL TERM",
+            "The agreement shall remain in effect for an initial period of twelve (12) months commencing 1 February 2026 through 1 February 2027.",
+            "SECTION 3. ON-TIME DELIVERY TARGET (96%)",
+            "Section 3.1 Delivery Benchmark: Vendor commits to achieving a minimum 96% on-time delivery target for all scheduled inventory shipments across regional fulfillment centers."
+        ],
+        [
+            "SECTION 4. MONTHLY PERFORMANCE REPORTING",
+            "Section 4.2 Report Delivery: Vendor shall submit monthly performance reports within 5 business days after month-end to Customer Operations.",
+            "SECTION 5. PAYMENT AND INVOICING (NET 45)",
+            "Section 5.1 Payment Terms: Customer shall pay all undisputed invoices within forty-five (45) calendar days of receipt ('Net 45').",
+            "SECTION 6. SERVICE CREDITS FOR DELAYS",
+            "Section 6.1 Late Delivery Remedy: In the event monthly on-time delivery falls below 96%, Customer is entitled to a 5% service credit against the subsequent monthly billing cycle."
+        ],
+        [
+            "SECTION 7. INSURANCE REQUIREMENTS (INR 1 CRORE)",
+            "Section 7.1 Policy Coverage: Vendor shall maintain comprehensive commercial general liability insurance with coverage limits of not less than INR 1 crore (INR 10,000,000) during the term.",
+            "SECTION 8. OPERATIONAL AND INCIDENT REPORTING (24 HOURS)",
+            "Section 8.3 Rapid Notification: Vendor shall report any operational disruption, cargo loss, or cybersecurity incident within twenty-four (24) hours.",
+            "SECTION 9. RENEWAL NOTICE PERIOD",
+            "Section 9.1 Non-Renewal Notice: Either party may prevent automatic renewal by providing at least sixty (60) days prior written notice before term expiration.",
+            "SECTION 10. AUDIT AND INSPECTION RIGHTS",
+            "Customer reserves the right to audit shipping logs and operational facilities upon 10 days advance notice."
+        ]
+    ]
+    p_nova = generate_pdf_document("02_NOVA_VENDOR_SERVICE_AGREEMENT.pdf", "Nova Global Vendor Service Agreement", nova_pages)
+
+    # 3. 03_ORBIT_DATA_PROCESSING_AND_LICENSE.pdf
+    orbit_pages = [
+        [
+            "SECTION 1. PARTIES AND APPOINTMENT",
+            "This Software License & Data Processing Agreement ('Agreement') is made effective 15 March 2026, between Orbit Analytics Inc. ('Customer') and CyberVault Infrastructure Solutions ('Vendor').",
+            "SECTION 2. SOFTWARE LICENSE GRANT",
+            "Vendor grants Customer an enterprise-wide, non-exclusive license to deploy the analytics software for internal business operations.",
+            "SECTION 3. SUPPORT SERVICE LEVEL AGREEMENT (4 HOURS)",
+            "Section 3.1 Support Acknowledgement: Vendor support engineers shall acknowledge all Priority 1 support requests within four (4) hours of ticket submission."
+        ],
+        [
+            "SECTION 4. DATA PROCESSING PRINCIPLES",
+            "Section 4.1 Processing Instructions: Vendor acts as Data Processor and shall process personal data solely in accordance with documented instructions from Customer.",
+            "SECTION 5. SECURITY INCIDENT NOTIFICATION (72 HOURS)",
+            "Section 5.2 Data Breach Protocol: Vendor shall notify Customer within seventy-two (72) hours of any confirmed security incident or personal data breach.",
+            "SECTION 6. POST-TERMINATION DATA DELETION (30 DAYS)",
+            "Section 6.1 Data Purge: Vendor shall completely delete and purge all Customer data and backups within thirty (30) days after termination or expiration of this Agreement and provide written certification."
+        ],
+        [
+            "SECTION 7. TERM AND RENEWAL NOTICE (120 DAYS)",
+            "Section 7.2 Automatic Extension: This Agreement shall automatically renew unless either party gives at least one hundred twenty (120) days written notice prior to the expiration date.",
+            "SECTION 8. ANNUAL LICENSE PAYMENT (45 DAYS)",
+            "Section 8.1 Annual Invoicing: All annual software license fees shall be payable within forty-five (45) days of the invoice date.",
+            "SECTION 9. COMPLIANCE AUDIT RIGHTS",
+            "Vendor shall permit Customer or an authorized third-party auditor to verify compliance with GDPR and ISO 27001 controls annually."
+        ],
+        [
+            "SECTION 14. CHANGE CONTROL AND AMBIGUOUS NOTIFICATION (REVIEW REQUIRED)",
+            "Section 14.2 Modification Notice: Notice of contract modifications may be delivered via reasonable commercial notification or as mutually agreed from time to time by the parties.",
+            "SECTION 15. CONFLICTING PROVISIONS AND DISPUTES (REVIEW REQUIRED)",
+            "Section 15.3 Inconsistency Between Terms: In the event of inconsistency between this Data Processing Schedule and the General License Terms regarding audit cost allocation, both provisions shall apply as determined by executive escalation."
+        ]
+    ]
+    p_orbit = generate_pdf_document("03_ORBIT_DATA_PROCESSING_AND_LICENSE.pdf", "Orbit Software License & Data Processing Agreement", orbit_pages)
+
+    return {
+        "acme": p_acme,
+        "nova": p_nova,
+        "orbit": p_orbit
+    }
+
 def seed_database_and_documents():
     init_db()
+    generate_test_contracts()
     db = SessionLocal()
 
     try:
