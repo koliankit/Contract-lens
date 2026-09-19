@@ -14,6 +14,7 @@ import { DocumentRepository } from './features/documents/DocumentRepository';
 import { AuditTrail } from './features/audit/AuditTrail';
 import { SettingsPage } from './features/settings/Settings';
 import { EvidenceModal, EvidenceModalData } from './components/EvidenceModal';
+import { ArchitectureModal } from './components/ArchitectureModal';
 
 import {
   DashboardMetrics, ContractListItem, Obligation, Deadline,
@@ -34,6 +35,7 @@ export const App: React.FC = () => {
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [evidenceModalData, setEvidenceModalData] = useState<EvidenceModalData | null>(null);
+  const [showArchitectureModal, setShowArchitectureModal] = useState(false);
 
   useEffect(() => {
     loadAllData();
@@ -126,6 +128,7 @@ export const App: React.FC = () => {
             }
           }}
           onOpenQuery={() => setCurrentTab('query')}
+          onOpenArchitecture={() => setShowArchitectureModal(true)}
           notifications={notifications}
           onMarkRead={handleMarkNotificationRead}
         />
@@ -251,6 +254,12 @@ export const App: React.FC = () => {
       <EvidenceModal
         evidence={evidenceModalData}
         onClose={() => setEvidenceModalData(null)}
+      />
+
+      {/* System Architecture & Lineage Blueprint Modal */}
+      <ArchitectureModal
+        isOpen={showArchitectureModal}
+        onClose={() => setShowArchitectureModal(false)}
       />
     </div>
   );

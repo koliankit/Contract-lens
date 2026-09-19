@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Search, Bell, User, Sparkles, Check, ExternalLink } from 'lucide-react';
+import { Search, Bell, User, Sparkles, Check, ExternalLink, Cpu } from 'lucide-react';
 import { NotificationItem } from '../types';
 
 interface HeaderProps {
   onSearch: (term: string) => void;
   onOpenQuery: () => void;
+  onOpenArchitecture?: () => void;
   notifications: NotificationItem[];
   onMarkRead: (id: string) => void;
 }
@@ -12,6 +13,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   onSearch,
   onOpenQuery,
+  onOpenArchitecture,
   notifications,
   onMarkRead,
 }) => {
@@ -59,6 +61,26 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Right Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        {/* Architecture & Lineage Blueprint Button */}
+        <button
+          onClick={onOpenArchitecture}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            backgroundColor: 'var(--bg-elevated)',
+            color: 'var(--text-secondary)',
+            border: '1px solid var(--border-color)',
+            padding: '7px 12px',
+            fontSize: '12px',
+            fontWeight: 500,
+            cursor: 'pointer',
+          }}
+        >
+          <Cpu size={14} color="var(--accent-primary)" />
+          <span>Architecture & Lineage</span>
+        </button>
+
         {/* Ask ContractLens Quick Button */}
         <button
           onClick={onOpenQuery}

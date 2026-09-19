@@ -1,14 +1,248 @@
-# ContractLens
+import React, { useState } from 'react';
+import { X, ShieldCheck, Layers, Cpu, Share2, CheckCircle2, FileText, ArrowRight, Eye } from 'lucide-react';
 
-**AI Contract Intelligence & Obligation Management Agent**  
-*From Contracts to Actions.*
+interface ArchitectureModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
----
+export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ isOpen, onClose }) => {
+  const [activeTab, setActiveTab] = useState<'visual' | 'ascii'>('visual');
 
-## Architecture Overview
+  if (!isOpen) return null;
 
-```
-                                      CONTRACTLENS
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+        backdropFilter: 'blur(6px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '24px',
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '960px',
+          maxHeight: '90vh',
+          backgroundColor: 'var(--bg-surface)',
+          border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: '0 25px 60px rgba(0,0,0,0.8)',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div
+          style={{
+            padding: '18px 24px',
+            borderBottom: '1px solid var(--border-color)',
+            backgroundColor: 'var(--bg-elevated)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: 'var(--radius-sm)',
+                backgroundColor: 'var(--accent-faint)',
+                border: '1px solid var(--accent-primary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--accent-primary)',
+              }}
+            >
+              <Cpu size={18} />
+            </div>
+            <div>
+              <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                ContractLens Agent Architecture
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                AI Contract Intelligence & Obligation Management Agent • "From Contracts to Actions"
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', backgroundColor: 'var(--bg-base)', borderRadius: 'var(--radius-sm)', padding: '2px', border: '1px solid var(--border-color)' }}>
+              <button
+                onClick={() => setActiveTab('visual')}
+                style={{
+                  padding: '4px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: 'none',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  backgroundColor: activeTab === 'visual' ? 'var(--bg-elevated)' : 'transparent',
+                  color: activeTab === 'visual' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                }}
+              >
+                Interactive Flow
+              </button>
+              <button
+                onClick={() => setActiveTab('ascii')}
+                style={{
+                  padding: '4px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: 'none',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  backgroundColor: activeTab === 'ascii' ? 'var(--bg-elevated)' : 'transparent',
+                  color: activeTab === 'ascii' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                }}
+              >
+                System Blueprint
+              </button>
+            </div>
+
+            <button
+              onClick={onClose}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* Content Body */}
+        <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+          {/* Motto Banner */}
+          <div
+            style={{
+              padding: '12px 18px',
+              backgroundColor: 'var(--accent-faint)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-sm)',
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              fontSize: '11px',
+              letterSpacing: '0.04em',
+              fontWeight: 600,
+              color: 'var(--accent-secondary)',
+              textTransform: 'uppercase',
+            }}
+          >
+            <span>Contract</span> → <span>Understand</span> → <span>Extract</span> → <span>Calculate</span> → <span>Compare</span> → <span>Verify</span> → <span>Review</span> → <span>Act</span> → <span>Monitor</span> → <span>Audit</span>
+          </div>
+
+          {activeTab === 'visual' ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Layer 1: Ingestion */}
+              <div style={{ padding: '16px', backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase' }}>1. Document Ingestion</span>
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--text-primary)', marginBottom: '6px' }}>
+                  PDF / DOCX / Scanned PDF / Amendments / Multiple Versions
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                  File Validation + OCR + Text Extraction &rarr; Document Structure Detection (Pages → Sections → Tables → Paragraphs)
+                </div>
+              </div>
+
+              {/* Layer 2: Intelligence Layer */}
+              <div style={{ padding: '16px', backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase' }}>2. AI Intelligence Layer</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginTop: '10px' }}>
+                  <div style={{ padding: '10px', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>Document Agent</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '4px' }}>Parties, Sections, Tables, Definitions, Metadata</div>
+                  </div>
+                  <div style={{ padding: '10px', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>Clause Agent</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '4px' }}>Payment, Renewal, Termination, SLA, Security</div>
+                  </div>
+                  <div style={{ padding: '10px', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>Obligation Agent</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '4px' }}>Who, Must do what, When, Frequency, Dependency</div>
+                  </div>
+                  <div style={{ padding: '10px', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>Deadline Engine</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '4px' }}>Fixed Dates, Business Days, Relative Dates, Renewal Windows</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Layer 3 & 4: Graph & Verification */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div style={{ padding: '16px', backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase' }}>3. Contract Intelligence Graph</span>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                    Topological relationship mapping: Contract → Party, Clause, Version → Obligation, Change Detected → Deadline, Owner.
+                  </div>
+                </div>
+
+                <div style={{ padding: '16px', backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase' }}>4. Verification & Risk Engine</span>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                    Schema Validation → Source Grounding → Date Validation → Conflict Detection → Verified vs Human Review Center.
+                  </div>
+                </div>
+              </div>
+
+              {/* Layer 5 & 6: Evidence & Action */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div style={{ padding: '16px', backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase' }}>5. Evidence-First Output</span>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                    Every finding anchors directly to source: AI Insight → Document → Page → Section → Highlighted Text.
+                  </div>
+                </div>
+
+                <div style={{ padding: '16px', backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase' }}>6. Action & Monitoring</span>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                    Verified Obligations → Timeline → Owner Assignment → Reminders → Alerts → Audit Trail Ledger.
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <pre
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--text-primary)',
+                backgroundColor: 'var(--bg-base)',
+                padding: '16px',
+                borderRadius: 'var(--radius-md)',
+                overflowX: 'auto',
+                lineHeight: '1.4',
+                border: '1px solid var(--border-color)',
+              }}
+            >
+{`                                      CONTRACTLENS
                     AI CONTRACT INTELLIGENCE & OBLIGATION MANAGEMENT AGENT
                                       "From Contracts to Actions"
                                              │
@@ -119,101 +353,11 @@
                                       │                               │
                                       │ AI Action → Evidence →        │
                                       │ Human Decision → Final State  │
-                                      └───────────────────────────────┘
-```
-
-> **The Core Motto**:  
-> `CONTRACT → UNDERSTAND → EXTRACT → CALCULATE → COMPARE → VERIFY → REVIEW → ACT → MONITOR → AUDIT`
-
----
-
-## 1. Document Ingestion Pipeline
-* **Formats Supported**: Multi-page PDF, scanned PDF (OCR), Word DOCX, Amendments, Schedules, and Addendums.
-* **Structural Parsing**: Pages &rarr; Sections &rarr; Subsections &rarr; Tables &rarr; Paragraphs.
-* **Deterministic Test Contracts**:
-  * `01_ACME_SaaS_MSA.pdf`: 20-page Master Subscription Agreement with 3-year term, mutual confidentiality, SLA acknowledgment, and Net 30 payment.
-  * `02_NOVA_VENDOR_SERVICE_AGREEMENT.pdf`: 14-page Logistics Vendor Agreement with 24h critical incident response, 60-day renewal notice, and monthly KPI delivery.
-  * `03_ORBIT_DATA_PROCESSING_AND_LICENSE.pdf`: 12-page Healthcare BAA / Data Processing Agreement with 72h GDPR breach notification, BAA audit reporting, and conflicting 30-day renewal notice.
-
----
-
-## 2. Multi-Agent AI Intelligence Layer
-* **Document Agent**: Extracts parties, effective dates, governing law, sections, tables, definitions, and document metadata.
-* **Clause Agent**: Classifies payment terms, renewal triggers, termination conditions, SLA benchmarks, liabilities, and security requirements.
-* **Obligation Agent**: Deconstructs legal clauses into 5 essential execution vectors:
-  1. *Who* (Responsible party / Internal owner)
-  2. *Must do what* (Actionable operational requirement)
-  3. *When* (Timeline, frequency, condition)
-  4. *Frequency* (One-time, recurring, event-triggered)
-  5. *Dependencies* (Prerequisites, conditions precedent)
-* **Deterministic Deadline Engine**: Calculates exact operational target dates based on complex legal rules:
-  * 4h SLA acknowledgment & 24h critical vendor response
-  * 72h incident notification
-  * 30, 60, 90, 120-day advance non-renewal windows
-  * 5 and 10 business days after calendar month-end
-  * Net 30 and Net 45 calendar days from verified invoice receipt
-* **Version Intelligence**: Compares V1 &harr; V2 to isolate semantic changes, material liability shifts, altered notice periods, and unilateral amendment risks.
-* **Query Agent**: Grounded Copilot providing citation-backed answers with verbatim excerpt references and confidence scores.
-
----
-
-## 3. Contract Intelligence Graph
-Interactive topological mapping linking:
-`Contract` &rarr; `Party` &rarr; `Clause` &rarr; `Version` &rarr; `Obligation` &rarr; `Deadline` &rarr; `Owner` &rarr; `Review`
-
----
-
-## 4. Verification & Risk Engine
-No autonomous AI output is accepted into enterprise workflow without multi-stage validation:
-* **Schema Validation**: Ensures all required attributes (party, deadline rule, risk tier) are populated.
-* **Source Verification**: Checks that verbatim quotes exist verbatim in the source document.
-* **Date Validation**: Ensures deadline calculations align with business day calendars.
-* **Conflict Detection**: Flags discrepancies between master agreements and addendums.
-* **Human Review Center**: Items with confidence <90%, ambiguous triggers, or version conflicts require explicit human confirmation (`Confirm`, `Correct`, `Reject`, `Comment`).
-
----
-
-## 5. Evidence-First Output
-Every insight, metric, deadline, and obligation links to its exact source ground truth:
-```
-AI Insight ─────────→ Source Document ─────────→ Page ─────────→ Section ─────────→ Highlighted Text
-```
-
----
-
-## 6. Action & Monitoring
-* **Command Center Dashboard**: Dynamic metrics derived strictly from database state.
-* **Obligation Timeline**: Interactive calendar and agenda view with urgency sorting.
-* **Immutable Audit Trail**: Append-only ledger recording every agent operation, tool call, confidence score, and human triage decision.
-
----
-
-## Deployment & Local Development
-
-### Prerequisites
-* Python 3.10+
-* Node.js 18+
-
-### Running Locally
-```bash
-# 1. Install Backend Dependencies
-pip install -r requirements.txt
-
-# 2. Run Backend API Server
-uvicorn backend.main:app --reload --port 8000
-
-# 3. In a separate terminal, start Frontend Dev Server
-cd frontend
-npm install
-npm run dev
-```
-
-### Production Build & Vercel Deployment
-```bash
-# Compile production bundle
-npm run build
-
-# Push to GitHub main (triggers automatic Vercel production deployment)
-git push origin main
-```
-Live URL: [https://contract-lens-delta.vercel.app](https://contract-lens-delta.vercel.app)
+                                      └───────────────────────────────┘`}
+            </pre>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
