@@ -15,7 +15,6 @@ venv/
 ENV/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -46,8 +45,6 @@ serviceAccountKey.json
 *-credentials.json
 
 # Build outputs
-dist/
-dist-ssr/
 frontend/dist/
 frontend/dist-ssr/
 
