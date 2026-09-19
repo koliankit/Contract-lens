@@ -1,0 +1,85 @@
+# Firebase SQL Connect (Cloud SQL Postgres) Schema for ContractLens
+
+type Organization @table {
+  id: String! @col(name: "id")
+  name: String!
+  domain: String
+  createdAt: Date! @default(expr: "request.time")
+}
+
+type Contract @table {
+  id: String! @col(name: "id")
+  organizationId: String!
+  title: String!
+  counterparty: String!
+  contractType: String!
+  status: String!
+  effectiveDate: Date
+  expirationDate: Date
+  renewalType: String!
+  renewalNoticeDays: Int
+  renewalDeadline: Date
+  internalOwnerName: String!
+  summary: String
+}
+
+type Clause @table {
+  id: String! @col(name: "id")
+  contractId: String!
+  documentId: String!
+  clauseType: String!
+  title: String!
+  summary: String!
+  sourceText: String!
+  pageNumber: Int!
+  sectionNumber: String!
+  riskLevel: String!
+  confidence: String!
+  reviewRequired: Boolean!
+}
+
+type Obligation @table {
+  id: String! @col(name: "id")
+  contractId: String!
+  clauseId: String
+  party: String!
+  internalOwner: String!
+  action: String!
+  obligationType: String!
+  frequency: String!
+  triggerEvent: String
+  deadlineRule: String!
+  calculatedDeadline: Date
+  status: String!
+  priority: String!
+  riskLevel: String!
+  sourceText: String!
+  sourcePage: Int!
+  sourceSection: String!
+  confidence: String!
+  reviewRequired: Boolean!
+}
+
+type Deadline @table {
+  id: String! @col(name: "id")
+  contractId: String!
+  obligationId: String
+  title: String!
+  deadlineRule: String!
+  calculatedDate: Date!
+  calculationMethod: String!
+  status: String!
+  priority: String!
+}
+
+type Review @table {
+  id: String! @col(name: "id")
+  contractId: String!
+  itemType: String!
+  itemId: String!
+  title: String!
+  issueCategory: String!
+  reason: String!
+  status: String!
+  assignedToName: String!
+}

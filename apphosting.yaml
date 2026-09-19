@@ -1,0 +1,17 @@
+# Firebase App Hosting Configuration for ContractLens
+service: default
+runtime: nodejs20
+
+env:
+  - variable: NEXT_PUBLIC_APP_NAME
+    value: ContractLens
+  - variable: NEXT_PUBLIC_TAGLINE
+    value: "From Contracts to Actions"
+  - variable: DATABASE_URL
+    secret: CONTRACTLENS_DATABASE_URL
+  - variable: AI_API_KEY
+    secret: CONTRACTLENS_GEMINI_KEY
+
+scripts:
+  buildCommand: npm run build
+  runCommand: npm run preview -- --port 8080

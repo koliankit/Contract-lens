@@ -1,0 +1,15 @@
+{
+  "apphosting": {
+    "source": "frontend"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "dataconnect": {
+    "source": "dataconnect"
+  },
+  "functions": {
+    "source": "backend",
+    "runtime": "python311"
+  }
+}

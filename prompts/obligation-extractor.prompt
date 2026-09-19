@@ -1,0 +1,42 @@
+---
+model: gemini-3.5-flash
+input:
+  schema:
+    clause_text: string
+    clause_type: string
+    section_number: string
+    page_number: number
+output:
+  schema:
+    obligations:
+      type: array
+      items:
+        type: object
+        properties:
+          party: { type: string, enum: ["Customer", "Vendor"] }
+          internal_owner: { type: string, enum: ["Operations", "Procurement", "Finance", "Legal", "Contract Manager"] }
+          action: { type: string }
+          obligation_type: { type: string, enum: ["EXPLICIT", "DERIVED", "AMBIGUOUS"] }
+          frequency: { type: string, enum: ["ONE_TIME", "MONTHLY", "QUARTERLY", "ANNUALLY", "AS_NEEDED", "CONTINUOUS"] }
+          trigger_event: { type: string }
+          deadline_rule: { type: string }
+          priority: { type: string, enum: ["CRITICAL", "HIGH", "MEDIUM", "LOW"] }
+          risk_level: { type: string, enum: ["CRITICAL", "HIGH", "MEDIUM", "LOW"] }
+          confidence: { type: string, enum: ["HIGH", "MEDIUM", "LOW"] }
+          review_required: { type: boolean }
+---
+You are ContractLens Obligation Intelligence Agent.
+Analyze the following contractual clause:
+
+Clause Section: {{section_number}} (Page {{page_number}})
+Category: {{clause_type}}
+Clause Text:
+"""
+{{clause_text}}
+"""
+
+Rules:
+1. Distinguish the legal responsible party (Customer or Vendor) from the internal operational owner (e.g. Operations, Procurement, Finance).
+2. Distinguish explicit obligations from derived operational requirements and ambiguous provisions.
+3. If language is ambiguous or conflicting, set review_required to true.
+4. Extract the exact deadline rule (do not invent dates; the deterministic deadline engine will calculate calendar dates).
